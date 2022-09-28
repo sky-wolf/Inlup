@@ -21,7 +21,7 @@ namespace HangMan
 
         public void Init()
         {
-            this.ReadList();
+            ReadList();
         }
 
         public void Run()
@@ -29,14 +29,14 @@ namespace HangMan
             int left = 10;
             bool win = false;
             
-            this.ValjOrd();
+            ValjOrd();
 
-            string responses = new string(this.response);
+            string responses = new string(response);
 
             while (!win)
             {
                 Console.Clear();
-                this.Stats(left);
+                Stats(left);
 
                 //read only letters
                 string guess;
@@ -58,7 +58,7 @@ namespace HangMan
                 {
                     case 1:
                         {
-                            bool temp = this.GuessLetter(guess);
+                            bool temp = GuessLetter(guess);
                             if (temp)
                             {
                                 left--;
@@ -67,7 +67,7 @@ namespace HangMan
                         break;
                     default:
                         {
-                            bool temp = this.GuessWord(guess);
+                            bool temp = GuessWord(guess);
                             if(temp)
                             {
                                 win = true;
@@ -83,7 +83,7 @@ namespace HangMan
                 if(left == 0)
                     break;
 
-                if(this.GuessWord(new string(s_responseList)))
+                if(GuessWord(new string(s_responseList)))
                 {
                     win = true;
                 }
@@ -92,13 +92,13 @@ namespace HangMan
             if (win)
             {
                 Console.WriteLine("We have a Winner");
-                Console.WriteLine($"___________________________________\r\n                  \r\n ___________.._______\r\n|  __________))______|\r\n| | / /      ||\r\n| |/ /       ||\r\n| | /        ||\r\n| |/         ||\r\n| |          ||\r\n| |     \r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| | \t{this.PrintWord()}\r\n|_|___________________________________________________________");
+                Console.WriteLine($"___________________________________\r\n                  \r\n ___________.._______\r\n|  __________))______|\r\n| | / /      ||\r\n| |/ /       ||\r\n| | /        ||\r\n| |/         ||\r\n| |          ||\r\n| |     \r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| | \t{PrintWord()}\r\n|_|___________________________________________________________");
             }
             else
             {
                 Console.WriteLine("Game over");
-                Console.WriteLine($"___________________________________\r\n                  \r\n ___________.._______\r\n|  __________))______|\r\n| | / /      ||\r\n| |/ /       ||\r\n| | /        ||\r\n| |/         ||\r\n| |          ||\r\n| | \r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| | \t{this.PrintWord()}\r\n|_|___________________________________________________________");
-                Console.WriteLine($"looking for the word: {this.Printanswer()}");
+                Console.WriteLine($"___________________________________\r\n                  \r\n ___________.._______\r\n|  __________))______|\r\n| | / /      ||\r\n| |/ /       ||\r\n| | /        ||\r\n| |/         ||\r\n| |          ||\r\n| | \r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| | \t{PrintWord()}\r\n|_|___________________________________________________________");
+                Console.WriteLine($"looking for the word: {Printanswer()}");
 
             }
             Console.ReadKey(true);
@@ -130,7 +130,7 @@ namespace HangMan
             }
             finally
             {
-                this.s_OrdList = list.ToArray();
+               s_OrdList = list.ToArray();
             }
 
         }
@@ -139,32 +139,32 @@ namespace HangMan
         {
             int i = Slummp.Roll((byte)s_OrdList.Length);
 
-            this.response = s_OrdList[i].ToCharArray();
-            this.s_responseList = s_OrdList[i].ToCharArray();
+            response = s_OrdList[i].ToCharArray();
+            s_responseList = s_OrdList[i].ToCharArray();
 
-            int test = this.response.Length;
+            int test = response.Length;
 
             for (int j = 0; j < test; j++)
             {
-                this.s_responseList[j] = '_';
+                s_responseList[j] = '_';
             }
         }
 
         public string Printanswer()
         {
             string res = "";
-            for (int i = 0; i < this.response.Length; ++i)
+            for (int i = 0; i < response.Length; ++i)
             {
-                res += this.response[i] + " " ;
+                res += response[i] + " " ;
             }
             return res;
         }
         public string PrintWord()
         {
             string res = "";
-            for (int i = 0; i < this.s_responseList.Length; ++i)
+            for (int i = 0; i < s_responseList.Length; ++i)
             {
-                res += this.s_responseList[i] + " ";
+                res += s_responseList[i] + " ";
             }
             return res;
         }
@@ -174,11 +174,11 @@ namespace HangMan
             bool inWord = false;
             if (guess.Length == 1)
             {
-                for (int i = 0; i < this.response.Length; ++i)
+                for (int i = 0; i < response.Length; ++i)
                 {
-                    if (this.response[i] == Convert.ToChar(guess))
+                    if (response[i] == Convert.ToChar(guess))
                     {
-                        this.s_responseList[i] = Convert.ToChar(guess);
+                        s_responseList[i] = Convert.ToChar(guess);
                         inWord = true;
                     }
                 }
@@ -188,9 +188,9 @@ namespace HangMan
                 }
                 else if (!inWord)
                 {
-                    if (this.sb.Length == 0)
+                    if (sb.Length == 0)
                     {
-                        this.sb.Append(guess);
+                        sb.Append(guess);
                         res = true;
                     }
                     else
@@ -206,7 +206,7 @@ namespace HangMan
                         }
                         if (!duplicat)
                         {
-                            this.sb.Append(Convert.ToChar(guess));
+                            sb.Append(Convert.ToChar(guess));
                             res = true;
                         }
 
@@ -218,11 +218,11 @@ namespace HangMan
 
         public bool GuessWord(string guess)
         {
-            bool test = guess.Equals(new string(this.response));
+            bool test = guess.Equals(new string(response));
 
             if (test)
             {
-                this.s_responseList = guess.ToCharArray();
+               s_responseList = guess.ToCharArray();
             }
             
             return test;
@@ -230,8 +230,8 @@ namespace HangMan
 
         private void Stats(int gus)
         {
-            Console.WriteLine($"\r\n___________________________________\r\n                  Guesses left {gus}\r\n ___________.._______\r\n|  __________))______|\r\n| | / /      ||\r\n| |/ /       ||\r\n| | /        ||\r\n| |/         ||\r\n| |          ||\r\n| |     \r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| | \t{this.PrintWord()}\r\n|_|___________________________________________________________");
-            Console.WriteLine($"Incorrect guesses: {this.sb.ToString()}");
+            Console.WriteLine($"\r\n___________________________________\r\n                  Guesses left {gus}\r\n ___________.._______\r\n|  __________))______|\r\n| | / /      ||\r\n| |/ /       ||\r\n| | /        ||\r\n| |/         ||\r\n| |          ||\r\n| |     \r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| | \t{PrintWord()}\r\n|_|___________________________________________________________");
+            Console.WriteLine($"Incorrect guesses: {sb.ToString()}");
         }
 
     }
