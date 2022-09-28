@@ -18,7 +18,6 @@ namespace HangMan
         public char[] s_responseList;
         public char[] response;
         private StringBuilder sb = new StringBuilder();
-        private StringBuilder stat = new StringBuilder();
 
         public void Init()
         {
@@ -32,14 +31,24 @@ namespace HangMan
             
             this.ValjOrd();
 
+            string responses = new string(this.response);
 
             while (!win)
             {
                 Console.Clear();
                 this.Stats(left);
-                string responses = new string(this.response);
 
-                string guess = Convert.ToString(Console.ReadLine());
+                //read only letters
+                string guess;
+                do
+                {
+                    guess = Console.ReadLine();
+                    if (true)
+                    {
+
+                    }
+                } while (guess.Any(c => !char.IsLetter(c)) || string.IsNullOrWhiteSpace(guess));
+
                 if(s_responseList.Length != response.Length)
                 {
                     break;
@@ -83,39 +92,19 @@ namespace HangMan
             if (win)
             {
                 Console.WriteLine("We have a Winner");
-                Console.WriteLine($"___________________________________\r\n                  \r\n ___________.._______\r\n|  __________))______|\r\n| | / /      ||\r\n| |/ /       ||\r\n| | /        ||\r\n| |/         ||\r\n| |          ||\r\n| |     {this.PrintGuesses()}\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| | Incorrect guesses: {this.sb.ToString()}\r\n|_|___________________________________________________________");
+                Console.WriteLine($"___________________________________\r\n                  \r\n ___________.._______\r\n|  __________))______|\r\n| | / /      ||\r\n| |/ /       ||\r\n| | /        ||\r\n| |/         ||\r\n| |          ||\r\n| |     \r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| | \t{this.PrintWord()}\r\n|_|___________________________________________________________");
             }
             else
             {
                 Console.WriteLine("Game over");
-                Console.WriteLine($"___________________________________\r\n                  \r\n ___________.._______\r\n|  __________))______|\r\n| | / /      ||\r\n| |/ /       ||\r\n| | /        ||\r\n| |/         ||\r\n| |          ||\r\n| | looking for the word: {this.PrintWord()}\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| | Incorrect guesses: {this.sb.ToString()}\r\n|_|___________________________________________________________");
+                Console.WriteLine($"___________________________________\r\n                  \r\n ___________.._______\r\n|  __________))______|\r\n| | / /      ||\r\n| |/ /       ||\r\n| | /        ||\r\n| |/         ||\r\n| |          ||\r\n| | \r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| | \t{this.PrintWord()}\r\n|_|___________________________________________________________");
+                Console.WriteLine($"looking for the word: {this.Printanswer()}");
 
             }
             Console.ReadKey(true);
         }
 
-        private int IsString(string message)
-        {
-            string? temp = null;
-            int result = 0;
-            do
-            {
-                Console.WriteLine(message);
-                temp = Convert.ToString(Console.ReadLine());
-                if (string.IsNullOrEmpty(temp))
-                {
-                    temp = null;
-                    //Console.Clear();
-                    Console.WriteLine("Felaktig inmatnig försök igen!");
-                }
-
-            } while (string.IsNullOrEmpty(temp));
-
-            return result;
-
-        }
-
-        private void ReadList()
+         private void ReadList()
         {
             string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\ord.txt";
             List<string> list = new List<string>();
@@ -161,7 +150,7 @@ namespace HangMan
             }
         }
 
-        public string PrintWord()
+        public string Printanswer()
         {
             string res = "";
             for (int i = 0; i < this.response.Length; ++i)
@@ -170,7 +159,7 @@ namespace HangMan
             }
             return res;
         }
-        public string PrintGuesses()
+        public string PrintWord()
         {
             string res = "";
             for (int i = 0; i < this.s_responseList.Length; ++i)
@@ -241,12 +230,8 @@ namespace HangMan
 
         private void Stats(int gus)
         {
-            Console.WriteLine(".------..------..------..------.     .------..------..------.\r\n|H.--. ||A.--. ||N.--. ||G.--. |.-.  |N.--. ||A.--. ||M.--. |\r\n| :/\\: || (\\/) || :(): || :/\\: ((5)) | :(): || (\\/) || (\\/) |\r\n| (__) || :\\/: || ()() || :\\/: |'-.-.| ()() || :\\/: || :\\/: |\r\n| '--'H|| '--'A|| '--'N|| '--'G| ((1)) '--'N|| '--'A|| '--'M|\r\n`------'`------'`------'`------'  '-'`------'`------'`------'");
-            for (int i = 0; i < this.response.Length; ++i)
-            {
-                Console.Write(this.response[i] + " ");
-            }
-            Console.WriteLine($"\r\n___________________________________\r\n                  Guesses left {gus}\r\n ___________.._______\r\n|  __________))______|\r\n| | / /      ||\r\n| |/ /       ||\r\n| | /        ||\r\n| |/         ||\r\n| |          ||\r\n| |     {this.PrintGuesses()}\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| | Incorrect guesses: {this.sb.ToString()}\r\n|_|___________________________________________________________");
+            Console.WriteLine($"\r\n___________________________________\r\n                  Guesses left {gus}\r\n ___________.._______\r\n|  __________))______|\r\n| | / /      ||\r\n| |/ /       ||\r\n| | /        ||\r\n| |/         ||\r\n| |          ||\r\n| |     \r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| |\r\n| | \t{this.PrintWord()}\r\n|_|___________________________________________________________");
+            Console.WriteLine($"Incorrect guesses: {this.sb.ToString()}");
         }
 
     }
